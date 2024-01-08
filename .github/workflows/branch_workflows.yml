@@ -54,6 +54,30 @@ jobs:
       - name: Run Tests
         run: ./gradlew test
 
+  snyk-test:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    env:
+      SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '14'
+
+      - name: Install Snyk
+        run: npm install -g snyk
+
+      - name: Snyk authenticate
+        run: snyk auth $SNYK_TOKEN
+
+      - name: Run Snyk
+        run: snyk test --severity-threshold=medium
+
   coverage:
     runs-on: ubuntu-latest
 
