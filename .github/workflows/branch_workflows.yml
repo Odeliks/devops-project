@@ -83,17 +83,11 @@ jobs:
       - name: Snyk authenticate
         run: snyk auth $SNYK_TOKEN
 
-      - name: Fetch artifacts
-        uses: actions/download-artifact@v2
-        with:
-          name: build-artifacts
-          path: build/
+      - name: Add permissions to gradlew
+        run: chmod +x ./gradlew
 
-#      - name: Add permissions to gradlew
-#        run: chmod +x ./gradlew
-#
-#      - name: Build with Projects
-#        run: ./gradlew build
+      - name: Build with Projects
+        run: ./gradlew build
 
       - name: Run Snyk
         run: snyk test --all-sub-projects
