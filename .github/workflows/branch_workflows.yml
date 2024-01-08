@@ -79,11 +79,8 @@ jobs:
       - name: Add permissions to gradlew
         run: chmod +x ./gradlew
 
-      - name: Generate depandacy tree
-        run: ./gradlew generateDependencyTree
-
       - name: Run Snyk
-        run: snyk test
+        run: ./gradlew snyk-test
 
   coverage:
     runs-on: ubuntu-latest
