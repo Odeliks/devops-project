@@ -187,3 +187,40 @@ jobs:
           push: true
           tags: ghcr.io/${{ github.actor }}/java-mock-app:latest
           platforms: linux/amd64
+
+  deploy:
+    needs: build-image
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Start minikube
+        uses: medyagh/setup-minikube@master
+
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Pull docker image
+        run: docker pull ghcr.io/${{ github.actor }}/java-mock-app:latest
+
+      - name: Deploy to minikube
+        run:
+          kubectl apply -f minikube/minikube.yml
+
+      - name: Deploy rollout
+        run: kubectl rollout status deployment/java-mock-deployment
+
+      - name: Expose App
+        run: |
+          minikube service list
+          minikube service java-mock-node-port --url
+          curl $(minikube service java-mock-node-port --url)  
+
+      - name: Stop app
+        run: minikube stop
