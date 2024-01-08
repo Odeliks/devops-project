@@ -115,18 +115,19 @@ jobs:
 
   sonar-scan:
     runs-on: ubuntu-latest
-
+    env:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
     needs: test
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Add permissions to gradlew
+        run: chmod +x ./gradlew
+
       - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: ./gradlew sonar -Dsonar.login=$SONAR_TOKEN
 
   coverage:
     runs-on: ubuntu-latest
