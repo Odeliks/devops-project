@@ -203,7 +203,7 @@ jobs:
 
       - name: Deploy to minikube
         run:
-          kubectl apply -f minikube/minikube.yml
+          kubectl apply -f minikube/
 
       - name: Deploy rollout
         run: kubectl rollout status deployment/java-mock-app
