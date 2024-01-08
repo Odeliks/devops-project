@@ -30,7 +30,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: build-artifacts
-          path: build/libs/
+          path: build/
 
 
   test:
@@ -80,7 +80,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: build-artifacts
-          path: build/libs/
+          path: build/
 
       - name: Run Snyk
         run: snyk test --all-sub-projects
