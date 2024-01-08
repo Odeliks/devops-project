@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: java-mock-app
+  template:
+    metadata:
+      labels:
+        app: java-mock-app
+    spec:
+      containers:
+        - name: api
+          image: ghcr.io/Odeliks/java-mock-app:latest
+          ports:
+            - containerPort: 8080
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: java-mock-node-port
+spec:
+  selector:
+    app: java-mock-app
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
