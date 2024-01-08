@@ -26,6 +26,12 @@ jobs:
       - name: Build with Projects
         run: ./gradlew build
 
+      - name: Upload artifacts from build
+        uses: actions/upload-artifact@v2
+        with:
+          name: build-artifacts
+          path: build/libs/
+
 
   test:
     runs-on: ubuntu-latest
