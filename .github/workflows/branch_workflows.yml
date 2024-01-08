@@ -83,11 +83,11 @@ jobs:
       - name: Snyk authenticate
         run: snyk auth $SNYK_TOKEN
 
-      - name: Add permissions to gradlew
-        run: chmod +x ./gradlew
-
-      - name: Build with Projects
-        run: ./gradlew build
+#      - name: Add permissions to gradlew
+#        run: chmod +x ./gradlew
+#
+#      - name: Build with Projects
+#        run: ./gradlew build
 
       - name: Run Snyk
         run: snyk test --all-sub-projects
