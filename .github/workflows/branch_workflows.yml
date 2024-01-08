@@ -206,7 +206,7 @@ jobs:
           kubectl apply -f minikube/minikube.yml
 
       - name: Deploy rollout
-        run: kubectl rollout status deployment/java-mock-deployment
+        run: kubectl rollout status deployment/java-mock-app-deployment
 
       - name: Expose App
         run: |
