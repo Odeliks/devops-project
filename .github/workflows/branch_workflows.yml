@@ -113,6 +113,30 @@ jobs:
       - name: Run Snyk
         run: snyk test --all-sub-projects
 
+  sonar-scan:
+    runs-on: ubuntu-latest
+    env:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+    if: github.ref == 'refs/heads/master'
+    needs: test
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Java
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '17'
+          cache: 'gradle'
+
+      - name: Add permissions to gradlew
+        run: chmod +x ./gradlew
+
+      - name: SonarCloud Scan
+        run: ./gradlew sonar -Dsonar.token=$SONAR_TOKEN
+
   coverage:
     runs-on: ubuntu-latest
 
