@@ -3,6 +3,7 @@ plugins {
 	id 'org.springframework.boot' version '3.2.1'
 	id 'io.spring.dependency-management' version '1.1.4'
 	id 'jacoco'
+	id 'checkstyle'
 }
 
 group = 'com'
@@ -12,15 +13,27 @@ java {
 	sourceCompatibility = '17'
 }
 
+configurations {
+	checkstyleConfig
+}
+
 repositories {
 	mavenCentral()
 }
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+
+	checkstyleConfig("com.puppycrawl.tools:checkstyle:8.29") { transitive = false }
+
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+checkstyle {
+	toolVersion '8.29'
+	config = resources.text.fromArchiveEntry(configurations.checkstyleConfig, 'google_checks.xml')
 }
