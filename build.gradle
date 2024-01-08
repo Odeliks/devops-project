@@ -24,3 +24,9 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+tasks.register('generateDependencyTree', DependencyReportTask) {
+	configurations = [configurations.compileClasspath]
+	outputFile = file("$buildDir/dependency-tree.txt")
+}
+

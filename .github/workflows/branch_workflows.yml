@@ -76,6 +76,12 @@ jobs:
       - name: Snyk authenticate
         run: snyk auth $SNYK_TOKEN
 
+      - name: Add permissions to gradlew
+        run: chmod +x ./gradlew
+
+      - name: Generate depandacy tree
+        run: ./gradlew generateDependencyTree
+
       - name: Run Snyk
         run: snyk test
 
