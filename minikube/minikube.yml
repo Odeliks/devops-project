@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: api
-          image: ghcr.io/odeliks/java-mock-app:latest
+          image: odeliks/java-mock-app:latest
           ports:
             - containerPort: 8080
 
