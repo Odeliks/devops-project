@@ -47,3 +47,31 @@ jobs:
 
       - name: Run Tests
         run: ./gradlew test
+
+  coverage:
+    runs-on: ubuntu-latest
+
+    needs: test
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Java
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '17'
+          cache: 'gradle'
+
+      - name: Add permissions to gradlew
+        run: chmod +x ./gradlew
+
+      - name: Fetch artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: build-artifacts
+          path: build/libs/
+
+      - name: Check coverage
+        run: ./gradlew jacocoTestReport
