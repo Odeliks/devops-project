@@ -77,7 +77,7 @@ jobs:
         run: snyk auth $SNYK_TOKEN
 
       - name: Run Snyk
-        run: snyk test --severity-threshold=medium
+        run: snyk test
 
   coverage:
     runs-on: ubuntu-latest
