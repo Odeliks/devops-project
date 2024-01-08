@@ -54,6 +54,27 @@ jobs:
       - name: Run Tests
         run: ./gradlew test
 
+  checkstyle:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '17'
+          cache: 'gradle'
+
+      - name: Make Gradlew executable
+        run: chmod +x ./gradlew
+
+      - name: Run Checkstyle
+        run: ./gradlew checkstyleMain checkstyleTest
+
   snyk-test:
     runs-on: ubuntu-latest
     needs: build
