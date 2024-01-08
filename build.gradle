@@ -3,7 +3,6 @@ plugins {
 	id 'org.springframework.boot' version '3.2.1'
 	id 'io.spring.dependency-management' version '1.1.4'
 	id 'jacoco'
-	id "io.snyk.gradle.plugin.snykplugin" version "0.4"
 }
 
 group = 'com'
@@ -24,12 +23,4 @@ dependencies {
 
 tasks.named('test') {
 	useJUnitPlatform()
-}
-
-snyk {
-	api = "$SNYK_TOKEN"
-	severity = 'low'
-	autoDownload = true
-	autoUpdate = true
-	arguments = '--all-sub-projects'
 }
