@@ -134,7 +134,7 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: SonarCloud Scan
-        run: ./gradlew sonar -Dsonar.login=$SONAR_TOKEN
+        run: ./gradlew sonar -Dsonar.token=$SONAR_TOKEN
 
 #  coverage:
 #    runs-on: ubuntu-latest
