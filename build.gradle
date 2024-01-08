@@ -46,5 +46,6 @@ sonarqube {
 		property "sonar.projectName", "devops-project"
 		property "sonar.projectKey", "Odeliks_devops-project"
 		property "sonar.organization", "odeliks"
+		property "sonar.gradle.skipCompile", "true"
 	}
 }

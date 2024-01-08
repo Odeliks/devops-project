@@ -6,118 +6,119 @@ on:
       - '*'
 
 jobs:
-#  build:
-#    runs-on: ubuntu-latest
-#
-#    steps:
-#      - name: Checkout repository
-#        uses: actions/checkout@v2
-#
-#      - name: Set up Java
-#        uses: actions/setup-java@v2
-#        with:
-#          distribution: 'adopt'
-#          java-version: '17'
-#          cache: 'gradle'
-#
-#      - name: Add permissions to gradlew
-#        run: chmod +x ./gradlew
-#
-#      - name: Build with Projects
-#        run: ./gradlew build
-#
-#      - name: Upload artifacts from build
-#        uses: actions/upload-artifact@v2
-#        with:
-#          name: build-artifacts
-#          path: build/
-#
-#
-#  test:
-#    runs-on: ubuntu-latest
-#    needs: build
-#
-#    steps:
-#      - name: Checkout repository
-#        uses: actions/checkout@v2
-#
-#      - name: Set up Java
-#        uses: actions/setup-java@v2
-#        with:
-#          distribution: 'adopt'
-#          java-version: '17'
-#          cache: 'gradle'
-#
-#      - name: Add permissions to gradlew
-#        run: chmod +x ./gradlew
-#
-#      - name: Run Tests
-#        run: ./gradlew test
-#
-#  checkstyle:
-#    runs-on: ubuntu-latest
-#    needs: build
-#
-#    steps:
-#      - name: Checkout repository
-#        uses: actions/checkout@v2
-#
-#      - name: Set up JDK
-#        uses: actions/setup-java@v2
-#        with:
-#          distribution: 'adopt'
-#          java-version: '17'
-#          cache: 'gradle'
-#
-#      - name: Make Gradlew executable
-#        run: chmod +x ./gradlew
-#
-#      - name: Run Checkstyle
-#        run: ./gradlew checkstyleMain checkstyleTest
-#
-#  snyk-test:
-#    runs-on: ubuntu-latest
-#    needs: build
-#    continue-on-error: true
-#    env:
-#      SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-#
-#    steps:
-#      - name: Checkout repository
-#        uses: actions/checkout@v2
-#
-#      - name: Set up Node
-#        uses: actions/setup-node@v3
-#        with:
-#          node-version: '16'
-#
-#      - name: Set up Java
-#        uses: actions/setup-java@v2
-#        with:
-#          distribution: 'adopt'
-#          java-version: '17'
-#          cache: 'gradle'
-#
-#      - name: Install Snyk
-#        run: npm install -g snyk
-#
-#      - name: Snyk authenticate
-#        run: snyk auth $SNYK_TOKEN
-#
-#      - name: Add permissions to gradlew
-#        run: chmod +x ./gradlew
-#
-#      - name: Build with Projects
-#        run: ./gradlew build
-#
-#      - name: Run Snyk
-#        run: snyk test --all-sub-projects
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Java
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '17'
+          cache: 'gradle'
+
+      - name: Add permissions to gradlew
+        run: chmod +x ./gradlew
+
+      - name: Build with Projects
+        run: ./gradlew build
+
+      - name: Upload artifacts from build
+        uses: actions/upload-artifact@v2
+        with:
+          name: build-artifacts
+          path: build/
+
+
+  test:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Java
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '17'
+          cache: 'gradle'
+
+      - name: Add permissions to gradlew
+        run: chmod +x ./gradlew
+
+      - name: Run Tests
+        run: ./gradlew test
+
+  checkstyle:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '17'
+          cache: 'gradle'
+
+      - name: Make Gradlew executable
+        run: chmod +x ./gradlew
+
+      - name: Run Checkstyle
+        run: ./gradlew checkstyleMain checkstyleTest
+
+  snyk-test:
+    runs-on: ubuntu-latest
+    needs: build
+    continue-on-error: true
+    env:
+      SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      - name: Set up Java
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '17'
+          cache: 'gradle'
+
+      - name: Install Snyk
+        run: npm install -g snyk
+
+      - name: Snyk authenticate
+        run: snyk auth $SNYK_TOKEN
+
+      - name: Add permissions to gradlew
+        run: chmod +x ./gradlew
+
+      - name: Build with Projects
+        run: ./gradlew build
+
+      - name: Run Snyk
+        run: snyk test --all-sub-projects
 
   sonar-scan:
     runs-on: ubuntu-latest
     env:
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-#    needs: test
+    if: github.ref == 'refs/heads/master'
+    needs: test
 
     steps:
       - name: Checkout repository
@@ -136,30 +137,30 @@ jobs:
       - name: SonarCloud Scan
         run: ./gradlew sonar -Dsonar.token=$SONAR_TOKEN
 
-#  coverage:
-#    runs-on: ubuntu-latest
-#
-#    needs: test
-#
-#    steps:
-#      - name: Checkout repository
-#        uses: actions/checkout@v2
-#
-#      - name: Set up Java
-#        uses: actions/setup-java@v2
-#        with:
-#          distribution: 'adopt'
-#          java-version: '17'
-#          cache: 'gradle'
-#
-#      - name: Add permissions to gradlew
-#        run: chmod +x ./gradlew
-#
-#      - name: Fetch artifacts
-#        uses: actions/download-artifact@v2
-#        with:
-#          name: build-artifacts
-#          path: build/libs/
-#
-#      - name: Check coverage
-#        run: ./gradlew jacocoTestCoverageVerification
+  coverage:
+    runs-on: ubuntu-latest
+
+    needs: test
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Java
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '17'
+          cache: 'gradle'
+
+      - name: Add permissions to gradlew
+        run: chmod +x ./gradlew
+
+      - name: Fetch artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: build-artifacts
+          path: build/libs/
+
+      - name: Check coverage
+        run: ./gradlew jacocoTestCoverageVerification
